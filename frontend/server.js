@@ -5,7 +5,7 @@ const https = require('https');
 const url = require('url');
 
 const port = 3001;
-const backendUrl = 'https://gos-t3xb.onrender.com';
+const backendUrl = process.env.REACT_APP_API_URL || 'https://geekonsites-backend.onrender.com';
 
 const mimeTypes = {
   '.html': 'text/html',

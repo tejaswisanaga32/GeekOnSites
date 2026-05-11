@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: geekonsites-frontend
+    env: static
+    plan: free
+    buildCommand: "npm run build"
+    publishPath: "dist"
+    envVars:
+      - key: REACT_APP_API_URL
+        value: https://geekonsites-backend.onrender.com
+    autoDeploy: true
