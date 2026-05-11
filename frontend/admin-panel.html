@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - GeekOnSite</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            background: rgba(26, 26, 26, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            border: 1px solid #d4af37;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #d4af37;
+        }
+
+        .logo h2 {
+            color: #ffffff;
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .logo p {
+            color: #d4af37;
+            font-size: 14px;
+        }
+
+        .nav-menu {
+            list-style: none;
+        }
+
+        .nav-menu li {
+            margin-bottom: 10px;
+        }
+
+        .nav-menu a {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            text-decoration: none;
+            color: #ffffff;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-menu a:hover,
+        .nav-menu a.active {
+            background: #d4af37;
+            color: white;
+        }
+
+        .nav-menu i {
+            margin-right: 10px;
+            width: 20px;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 20px;
+        }
+
+        .header {
+            background: rgba(26, 26, 26, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #d4af37;
+        }
+
+        .header h1 {
+            color: #ffffff;
+            font-size: 28px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid #d4af37;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #d4af37 0%, #f9f0a0 50%, #d4af37 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #b78d3f 0%, #f9f0a0 50%, #b78d3f 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+            border: 1px solid #6c757d;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+            border: 1px solid #dc3545;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+        }
+
+        /* Content Area */
+        .content {
+            background: rgba(26, 26, 26, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border: 1px solid #d4af37;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: rgba(26, 26, 26, 0.95);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            border-left: 4px solid #d4af37;
+            border: 1px solid #d4af37;
+        }
+
+        .stat-card h3 {
+            font-size: 32px;
+            color: #ffffff;
+            margin-bottom: 5px;
+        }
+
+        .stat-card p {
+            color: #d4af37;
+            font-size: 14px;
+        }
+
+        /* Table */
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #d4af37;
+            color: #ffffff;
+        }
+
+        th {
+            background: rgba(26, 26, 26, 0.95);
+            font-weight: 600;
+            color: #d4af37;
+            border: 1px solid #d4af37;
+        }
+
+        tr:hover {
+            background: rgba(26, 26, 26, 0.8);
+        }
+
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-open {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-in-progress {
+            background: #cce5ff;
+            color: #004085;
+        }
+
+        .status-resolved {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-closed {
+            background: #e2e3e5;
+            color: #383d41;
+        }
+
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #ffffff;
+        }
+
+        .loading i {
+            font-size: 24px;
+            animation: spin 1s linear infinite;
+            color: #d4af37;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Alert */
+        .alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .alert-success {
+            background: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+            border: 1px solid #d4af37;
+        }
+
+        .alert-error {
+            background: rgba(248, 215, 218, 0.1);
+            color: #721c24;
+            border: 1px solid #d4af37;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #ffffff;
+        }
+
+        .empty-state i {
+            font-size: 48px;
+            margin-bottom: 15px;
+            color: #d4af37;
+        }
+
+        /* Modal */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: rgba(26, 26, 26, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 500px;
+            border: 1px solid #d4af37;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            color: #ffffff;
+        }
+
+        .modal-header h3 {
+            margin: 0;
+            color: #ffffff;
+        }
+
+        .close {
+            background: none;
+            border: none;
+            color: #ffffff;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .close:hover {
+            color: #d4af37;
+        }
+
+        .modal-body {
+            color: #ffffff;
+        }
+
+        .modal-body p {
+            margin-bottom: 15px;
+            color: #d4af37;
+        }
+
+        .modal-body .form-group {
+            margin-bottom: 15px;
+        }
+
+        .modal-body label {
+            display: block;
+            margin-bottom: 8px;
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        .modal-body input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d4af37;
+            border-radius: 8px;
+            font-size: 14px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            transition: all 0.3s ease;
+        }
+
+        .modal-body input:focus {
+            outline: none;
+            border-color: #d4af37;
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.3);
+            background: rgba(255, 255, 255, 0.15);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="logo">
+                <h2><i class="fas fa-cogs"></i> GeekOnSite</h2>
+                <p>Admin Panel</p>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#" class="nav-link active" data-tab="dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li><a href="#" class="nav-link" data-tab="tickets"><i class="fas fa-ticket-alt"></i> All Tickets</a></li>
+                <li><a href="#" class="nav-link" data-tab="pending"><i class="fas fa-clock"></i> Pending Tickets</a></li>
+                <li><a href="#" class="nav-link" data-tab="inprogress"><i class="fas fa-spinner"></i> In Progress</a></li>
+                <li><a href="#" class="nav-link" data-tab="resolved"><i class="fas fa-check-circle"></i> Resolved</a></li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="header">
+                <h1 id="pageTitle">Dashboard</h1>
+                <div class="header-actions">
+                    <button class="btn btn-primary" onclick="refreshData()">
+                        <i class="fas fa-sync-alt"></i> Refresh
+                    </button>
+                    <button class="btn btn-secondary" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </div>
+            </div>
+
+            <div class="content">
+                <div id="alert" class="alert"></div>
+                <div id="contentArea">
+                    <!-- Content will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Assign Agent Modal -->
+    <div id="assignModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Assign Agent to Ticket</h3>
+                <span class="close" onclick="closeAssignModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="modalTicketNumber">Ticket Number:</label>
+                    <input type="text" id="modalTicketNumber" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="agentSelect">Select Agent:</label>
+                    <select id="agentSelect" required>
+                        <option value="">Loading agents...</option>
+                    </select>
+                </div>
+                <div style="display: flex; gap: 10px; margin-top: 20px;">
+                    <button class="btn btn-primary" onclick="assignAgent(document.getElementById('modalTicketNumber').textContent)">
+                        <i class="fas fa-user-plus"></i> Assign Agent
+                    </button>
+                    <button class="btn btn-secondary" onclick="closeAssignModal()">
+                        <i class="fas fa-times"></i> Cancel
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE_URL = 'https://geekonsite-2.onrender.com/api';
+        let currentTab = 'dashboard';
+
+        // Check authentication
+        document.addEventListener('DOMContentLoaded', function() {
+            const token = localStorage.getItem('adminToken');
+            const adminInfo = localStorage.getItem('adminInfo');
+            
+            if (!token || !adminInfo) {
+                window.location.href = 'admin-login.html';
+                return;
+            }
+
+            // Check if token is valid (starts with 'admin-token-')
+            if (!token.startsWith('admin-token-')) {
+                localStorage.removeItem('adminToken');
+                localStorage.removeItem('adminInfo');
+                window.location.href = 'admin-login.html';
+                return;
+            }
+
+            showTab('dashboard');
+        });
+
+        // Navigation
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const tab = this.getAttribute('data-tab');
+                showTab(tab);
+                
+                // Update active state
+                document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        function showTab(tab) {
+            currentTab = tab;
+            const contentArea = document.getElementById('contentArea');
+            const pageTitle = document.getElementById('pageTitle');
+            
+            // Update page title
+            const titles = {
+                'dashboard': 'Dashboard',
+                'tickets': 'All Tickets',
+                'pending': 'Pending Tickets',
+                'inprogress': 'In Progress',
+                'resolved': 'Resolved Tickets'
+            };
+            pageTitle.textContent = titles[tab] || 'Dashboard';
+            
+            // Show loading
+            contentArea.innerHTML = '<div class="loading"><i class="fas fa-spinner"></i><p>Loading...</p></div>';
+            
+            // Load content
+            switch(tab) {
+                case 'dashboard':
+                    loadDashboard();
+                    break;
+                case 'tickets':
+                    loadTickets();
+                    break;
+                case 'pending':
+                    loadTicketsByStatus('OPEN');
+                    break;
+                case 'inprogress':
+                    loadTicketsByStatus('IN_PROGRESS');
+                    break;
+                case 'resolved':
+                    loadTicketsByStatus('RESOLVED');
+                    break;
+                default:
+                    loadDashboard();
+            }
+        }
+
+        async function loadDashboard() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/admin/dashboard`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    const stats = data.data;
+                    document.getElementById('contentArea').innerHTML = `
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <h3>${stats.totalTickets || 0}</h3>
+                                <p>Total Tickets</p>
+                            </div>
+                            <div class="stat-card">
+                                <h3>${stats.openTickets || 0}</h3>
+                                <p>Open Tickets</p>
+                            </div>
+                            <div class="stat-card">
+                                <h3>${stats.inProgressTickets || 0}</h3>
+                                <p>In Progress</p>
+                            </div>
+                            <div class="stat-card">
+                                <h3>${stats.resolvedTickets || 0}</h3>
+                                <p>Resolved</p>
+                            </div>
+                        </div>
+                        <div style="margin-top: 30px;">
+                            <h3>Recent Activity</h3>
+                            <p>Dashboard statistics loaded successfully.</p>
+                        </div>
+                    `;
+                } else {
+                    throw new Error(data.message || 'Failed to load dashboard');
+                }
+            } catch (error) {
+                document.getElementById('contentArea').innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <p>Error loading dashboard: ${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+
+        async function loadTickets() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/admin/tickets`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    renderTicketsTable(data.data);
+                } else {
+                    throw new Error(data.message || 'Failed to load tickets');
+                }
+            } catch (error) {
+                document.getElementById('contentArea').innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <p>Error loading tickets: ${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+
+        async function loadTicketsByStatus(status) {
+            try {
+                const response = await fetch(`${API_BASE_URL}/admin/tickets/status/${status}`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    renderTicketsTable(data.data);
+                } else {
+                    throw new Error(data.message || 'Failed to load tickets');
+                }
+            } catch (error) {
+                document.getElementById('contentArea').innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <p>Error loading tickets: ${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+
+        function renderTicketsTable(tickets) {
+            if (!tickets || tickets.length === 0) {
+                document.getElementById('contentArea').innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-inbox"></i>
+                        <p>No tickets found</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const html = `
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Ticket #</th>
+                                <th>Customer</th>
+                                <th>Phone</th>
+                                <th>Category</th>
+                                <th>Status</th>
+                                <th>Assigned To</th>
+                                <th>Created</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${tickets.map(ticket => `
+                                <tr>
+                                    <td>${ticket.ticketNumber}</td>
+                                    <td>${ticket.customerName || 'N/A'}</td>
+                                    <td>${ticket.customerPhone || 'N/A'}</td>
+                                    <td>${ticket.category || 'N/A'}</td>
+                                    <td><span class="status-badge status-${ticket.status?.toLowerCase()}">${ticket.status || 'N/A'}</span></td>
+                                    <td>${ticket.assignedToName || 'Unassigned'}</td>
+                                    <td>${new Date(ticket.createdAt).toLocaleDateString()}</td>
+                                    <td>
+                                        <button class="btn btn-primary" onclick="viewTicket('${ticket.ticketNumber}')" style="padding: 5px 10px; font-size: 12px;">
+                                            <i class="fas fa-eye"></i> View
+                                        </button>
+                                        <button class="btn btn-secondary" onclick="openAssignModal('${ticket.ticketNumber}')" style="padding: 5px 10px; font-size: 12px; margin-left: 5px;">
+                                            <i class="fas fa-user-plus"></i> Assign
+                                        </button>
+                                    </td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            `;
+            
+            document.getElementById('contentArea').innerHTML = html;
+        }
+
+        function viewTicket(ticketNumber) {
+            showAlert(`Viewing ticket: ${ticketNumber}`, 'success');
+        }
+
+        function openAssignModal(ticketNumber) {
+            const modal = document.getElementById('assignModal');
+            document.getElementById('modalTicketNumber').textContent = ticketNumber;
+            modal.style.display = 'block';
+            loadAgents();
+        }
+
+        function loadAgents() {
+            const agentSelect = document.getElementById('agentSelect');
+            agentSelect.innerHTML = '<option value="">Loading agents...</option>';
+            
+            fetch(`${API_BASE_URL}/agent/list`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success && data.data) {
+                        agentSelect.innerHTML = '<option value="">Select an agent...</option>';
+                        data.data.forEach(agent => {
+                            const option = document.createElement('option');
+                            option.value = agent.agentId;
+                            option.textContent = `${agent.firstName} ${agent.lastName} (${agent.agentId})`;
+                            agentSelect.appendChild(option);
+                        });
+                    } else {
+                        agentSelect.innerHTML = '<option value="">No agents available</option>';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading agents:', error);
+                    agentSelect.innerHTML = '<option value="">Error loading agents</option>';
+                });
+            agentIdInput.focus();
+        }
+
+        function closeAssignModal() {
+            const modal = document.getElementById('assignModal');
+            modal.style.display = 'none';
+        }
+
+        function assignAgent(ticketNumber) {
+            const agentSelect = document.getElementById('agentSelect');
+            const selectedOption = agentSelect.options[agentSelect.selectedIndex];
+            
+            if (!selectedOption.value) {
+                showAlert('Please select an agent', 'error');
+                return;
+            }
+            
+            const agentId = selectedOption.value;
+            const agentName = selectedOption.textContent;
+
+            fetch(`${API_BASE_URL}/admin/tickets/${ticketNumber}/assign`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    agentId: agentId,
+                    agentName: agentName
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showAlert('Ticket assigned successfully!', 'success');
+                    closeAssignModal();
+                    refreshData();
+                } else {
+                    showAlert(data.message || 'Failed to assign ticket', 'error');
+                }
+            })
+            .catch(error => {
+                showAlert('Error assigning ticket: ' + error.message, 'error');
+            });
+        }
+
+        function refreshData() {
+            showTab(currentTab);
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('adminToken');
+                localStorage.removeItem('adminInfo');
+                window.location.href = 'admin-login.html';
+            }
+        }
+
+        function showAlert(message, type) {
+            const alert = document.getElementById('alert');
+            alert.className = `alert alert-${type}`;
+            alert.textContent = message;
+            alert.style.display = 'block';
+            
+            setTimeout(() => {
+                alert.style.display = 'none';
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

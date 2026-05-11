@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Technician Registration - GeekOnSite</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .register-container {
+            min-height: 100vh;
+            background: linear-gradient(135deg, rgba(0,0,0,0.8), rgba(26,26,26,0.9)), url('images/homepage display 1.jpeg') center/cover no-repeat;
+            padding: 2rem 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .register-box {
+            background: linear-gradient(135deg, rgba(26, 26, 26, 0.98), rgba(20, 20, 20, 0.95));
+            border: 2px solid var(--secondary-color);
+            border-radius: 20px;
+            padding: 2.5rem;
+            width: 100%;
+            max-width: 700px;
+            margin: 0 auto;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(212, 175, 55, 0.1);
+            backdrop-filter: blur(20px);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .register-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--secondary-color), #fff, var(--secondary-color));
+            animation: shimmer 3s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        .register-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .register-header h1 {
+            color: var(--secondary-color);
+            font-size: 2.2rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            text-shadow: 0 2px 10px rgba(212, 175, 55, 0.3);
+        }
+        
+        .register-header p {
+            color: var(--text-light);
+            font-size: 1.1rem;
+            line-height: 1.6;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .form-section {
+            background: rgba(51, 51, 51, 0.2);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+        
+        .form-section::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: 20px;
+            right: 20px;
+            height: 2px;
+            background: var(--secondary-color);
+            border-radius: 2px;
+        }
+        
+        .form-section h3 {
+            color: var(--secondary-color);
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+        
+        .form-section h3 i {
+            font-size: 1.1rem;
+            background: rgba(212, 175, 55, 0.1);
+            padding: 0.5rem;
+            border-radius: 50%;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-row.three-columns {
+            grid-template-columns: 1fr 1fr 1fr;
+        }
+        
+        .form-group {
+            position: relative;
+        }
+        
+        .form-group label {
+            display: block;
+            color: var(--text-light);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(212, 175, 55, 0.2);
+            border-radius: 10px;
+            color: var(--text-light);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+        }
+        
+        .verification-section {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.05), rgba(212, 175, 55, 0.02));
+            border: 2px solid rgba(212, 175, 55, 0.3);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+        
+        .verification-section h3 {
+            color: var(--secondary-color);
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+        
+        .verification-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .verification-option {
+            background: rgba(255, 255, 255, 0.03);
+            border: 2px solid rgba(212, 175, 55, 0.2);
+            border-radius: 12px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        
+        .verification-option:hover {
+            border-color: var(--secondary-color);
+            background: rgba(212, 175, 55, 0.08);
+            transform: translateY(-2px);
+        }
+        
+        .verification-option.selected {
+            border-color: var(--secondary-color);
+            background: rgba(212, 175, 55, 0.15);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.2);
+        }
+        
+        .verification-option i {
+            font-size: 2rem;
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+            display: block;
+        }
+        
+        .verification-option h4 {
+            color: var(--text-light);
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .verification-option p {
+            color: #b0b0b0;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+        
+        .verification-input {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .verification-input input {
+            flex: 1;
+        }
+        
+        .btn-register {
+            width: 100%;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--secondary-color), #b8941f);
+            color: var(--black);
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 2rem;
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+        }
+        
+        .btn-register:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(212, 175, 55, 0.4);
+            background: linear-gradient(135deg, #e6b847, var(--secondary-color));
+        }
+        
+        .btn-register:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .portal-links {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+        }
+        
+        .portal-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            margin: 0 1rem;
+            transition: color 0.3s ease;
+        }
+        
+        .portal-links a:hover {
+            color: var(--secondary-color);
+        }
+    </style>
+</head>
+<body>
+    <div class="register-container">
+        <div class="register-box">
+            <div class="register-header">
+                <h1><i class="fas fa-tools"></i> Technician Registration</h1>
+                <p>Join our technical team with comprehensive verification and access to service opportunities</p>
+            </div>
+            
+            <div id="alertBox" class="alert"></div>
+            
+            <form id="registerForm">
+                <!-- Personal Information Section -->
+                <div class="form-section">
+                    <h3><i class="fas fa-user"></i> Personal Information</h3>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstName">First Name *</label>
+                            <input type="text" id="firstName" name="firstName" required 
+                                   placeholder="Enter your first name">
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Last Name *</label>
+                            <input type="text" id="lastName" name="lastName" required 
+                                   placeholder="Enter your last name">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="email">Email Address *</label>
+                            <input type="email" id="email" name="email" required 
+                                   placeholder="your.email@example.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone Number *</label>
+                            <input type="tel" id="phone" name="phone" required 
+                                   placeholder="+1 (555) 123-4567">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Address Information Section -->
+                <div class="form-section">
+                    <h3><i class="fas fa-map-marker-alt"></i> Address Information</h3>
+                    
+                    <div class="form-group">
+                        <label for="address">Street Address *</label>
+                        <input type="text" id="address" name="address" required 
+                               placeholder="123 Main Street, Apt 4B">
+                    </div>
+                    
+                    <div class="form-row three-columns">
+                        <div class="form-group">
+                            <label for="city">City *</label>
+                            <input type="text" id="city" name="city" required 
+                                   placeholder="New York">
+                        </div>
+                        <div class="form-group">
+                            <label for="state">State *</label>
+                            <input type="text" id="state" name="state" required 
+                                   placeholder="NY">
+                        </div>
+                        <div class="form-group">
+                            <label for="zipCode">ZIP Code *</label>
+                            <input type="text" id="zipCode" name="zipCode" required 
+                                   placeholder="10001">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Professional Information Section -->
+                <div class="form-section">
+                    <h3><i class="fas fa-briefcase"></i> Professional Information</h3>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="experience">Years of Experience *</label>
+                            <input type="number" id="experience" name="experience" required 
+                                   placeholder="5" min="0" max="50">
+                        </div>
+                        <div class="form-group">
+                            <label for="specialization">Primary Specialization *</label>
+                            <select id="specialization" name="specialization" required>
+                                <option value="">Select your expertise</option>
+                                <option value="computers">💻 Computer Support</option>
+                                <option value="printers">🖨️ Printer Support</option>
+                                <option value="networking">🌐 Network Setup</option>
+                                <option value="security">🔒 Security Systems</option>
+                                <option value="general">⚙️ General IT Support</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Verification Section -->
+                <div class="verification-section">
+                    <h3><i class="fas fa-shield-alt"></i> Identity Verification</h3>
+                    <p style="color: var(--text-light); margin-bottom: 2rem; font-size: 1.05rem;">
+                        Choose one verification method to complete your technician registration. All documents are securely processed and encrypted.
+                    </p>
+                    
+                    <div class="verification-options">
+                        <div class="verification-option" onclick="selectVerification('email')">
+                            <i class="fas fa-envelope"></i>
+                            <h4>Email Verification</h4>
+                            <p>Quick verification via email confirmation</p>
+                        </div>
+                        
+                        <div class="verification-option" onclick="selectVerification('phone')">
+                            <i class="fas fa-phone"></i>
+                            <h4>Phone Verification</h4>
+                            <p>Verify with SMS code to your phone</p>
+                        </div>
+                        
+                        <div class="verification-option" onclick="selectVerification('address')">
+                            <i class="fas fa-home"></i>
+                            <h4>Address Proof</h4>
+                            <p>Utility bill, bank statement, or lease</p>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group" style="display: none;" id="documentUploadSection">
+                        <label for="documentType">Selected Document Type</label>
+                        <select id="documentType" name="documentType" required>
+                            <option value="">Document type will be set automatically</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- Submit Button -->
+                <button type="submit" class="btn-register" id="submitBtn" disabled>
+                    <i class="fas fa-user-check"></i> Complete Registration
+                </button>
+            </form>
+            
+            <div class="portal-links">
+                <a href="agent-login.html"><i class="fas fa-sign-in-alt"></i> Technician Login</a>
+                <a href="customer-register.html"><i class="fas fa-user"></i> Customer Register</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Verification status tracking
+        let selectedVerificationType = null;
+        let verificationStatus = {
+            email: false,
+            phone: false,
+            address: false
+        };
+        
+        // Verification selection
+        function selectVerification(type) {
+            // Remove previous selection
+            document.querySelectorAll('.verification-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            // Add selection to clicked option
+            event.currentTarget.classList.add('selected');
+            selectedVerificationType = type;
+            
+            // Update hidden document type
+            document.getElementById('documentType').value = type;
+            
+            // Show appropriate verification section
+            document.querySelectorAll('.verification-item').forEach(item => {
+                item.style.display = 'none';
+            });
+            
+            const targetSection = document.getElementById(type + 'Verification');
+            if (targetSection) {
+                targetSection.style.display = 'block';
+            }
+        }
+        
+        // Form validation and submission
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Check if verification is selected
+            if (!selectedVerificationType) {
+                showAlert('Please select a verification method', 'error');
+                return;
+            }
+            
+            // Basic validation
+            const firstName = document.getElementById('firstName').value.trim();
+            const lastName = document.getElementById('lastName').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const address = document.getElementById('address').value.trim();
+            const city = document.getElementById('city').value.trim();
+            const state = document.getElementById('state').value.trim();
+            const zipCode = document.getElementById('zipCode').value.trim();
+            const experience = document.getElementById('experience').value;
+            const specialization = document.getElementById('specialization').value;
+            
+            if (!firstName || !lastName || !email || !phone || !address || !city || !state || !zipCode || !experience || !specialization) {
+                showAlert('Please fill in all required fields', 'error');
+                return;
+            }
+            
+            // Email validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                showAlert('Please enter a valid email address', 'error');
+                return;
+            }
+            
+            // Phone validation
+            const phoneRegex = /^[\d\s\-\+\(\)]+$/;
+            if (!phoneRegex.test(phone.replace(/\s/g, ''))) {
+                showAlert('Please enter a valid phone number', 'error');
+                return;
+            }
+            
+            // Show success message
+            showAlert('Registration submitted successfully! You will receive verification instructions shortly.', 'success');
+            
+            // Reset form after delay
+            setTimeout(() => {
+                this.reset();
+                selectedVerificationType = '';
+                document.querySelectorAll('.verification-option').forEach(option => {
+                    option.classList.remove('selected');
+                });
+            }, 3000);
+        });
+        
+        function showAlert(message, type) {
+            const alertBox = document.getElementById('alertBox');
+            alertBox.className = `alert ${type}`;
+            alertBox.textContent = message;
+            alertBox.style.display = 'block';
+            
+            setTimeout(() => {
+                alertBox.style.display = 'none';
+            }, 5000);
+        }
+    </script>
+</body>
+</html>

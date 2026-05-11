@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug Authentication</title>
+</head>
+<body>
+    <h1>Authentication Debug</h1>
+    <div id="debug-info"></div>
+    
+    <h2>Test Admin Login</h2>
+    <button onclick="testAdminLogin()">Test Admin Login</button>
+    
+    <h2>Check Current Token</h2>
+    <button onclick="checkToken()">Check Token</button>
+    
+    <h2>Open Admin Panel</h2>
+    <button onclick="openAdminPanel()">Open Admin Panel</button>
+    
+    <script>
+        function testAdminLogin() {
+            // Simulate admin login
+            const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjMiLCJlbWFpbCI6ImFkbWluQGV4YW1wbGUuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzc2ODM4MTg3LCJleHAiOjE3Nzc0NDI5ODd9.lQNS22daa2pbTA2epkZ2LjDn1UWTgNasTTRcCHsCTsU";
+            const adminInfo = {
+                id: "3",
+                firstName: "Admin",
+                lastName: "User",
+                email: "admin@example.com",
+                role: "admin"
+            };
+            
+            localStorage.setItem('adminToken', token);
+            localStorage.setItem('adminInfo', JSON.stringify(adminInfo));
+            
+            document.getElementById('debug-info').innerHTML = `
+                <p><strong>Token stored:</strong> ${token.substring(0, 20)}...</p>
+                <p><strong>Admin info stored:</strong> ${JSON.stringify(adminInfo)}</p>
+                <p style="color: green;">Login successful! You can now open admin panel.</p>
+            `;
+        }
+        
+        function checkToken() {
+            const token = localStorage.getItem('adminToken');
+            const adminInfo = localStorage.getItem('adminInfo');
+            
+            document.getElementById('debug-info').innerHTML = `
+                <p><strong>Token exists:</strong> ${token ? 'Yes' : 'No'}</p>
+                <p><strong>Token:</strong> ${token ? token.substring(0, 20) + '...' : 'None'}</p>
+                <p><strong>Admin info:</strong> ${adminInfo || 'None'}</p>
+            `;
+        }
+        
+        function openAdminPanel() {
+            window.open('admin-panel.html', '_blank');
+        }
+        
+        // Check current status on load
+        checkToken();
+    </script>
+</body>
+</html>
